@@ -25,6 +25,7 @@ SECRET_KEY = '-hghhfnu2jy)5f(o7ux*5o3x9#!p%=71m=-y%ilmuwvnfuf)8q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 ALLOWED_HOSTS = ['10.0.2.2','localhost', '127.0.0.1']
 
 
@@ -83,7 +84,7 @@ WSGI_APPLICATION = 'movielens_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'movielens_update',
+        'NAME': 'movie_db',
         'USER': 'postgres',
         'PASSWORD': '030898',
         'HOST': 'localhost',
@@ -129,3 +130,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+

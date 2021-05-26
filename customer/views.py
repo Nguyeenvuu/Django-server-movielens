@@ -33,23 +33,26 @@ class RegisterCustomer(APIView):
 
     def post(self, request):
 
-        user_name  = request.data['user_name']
-        password   = request.data['password']
-        name       = request.data['name']
-        email      = request.data['email']
-        adress     = request.data['adress']
-        birthday   = request.data['birthday']
-        gender     = request.data['gender']
-       
+        user_name       = request.data['user_name']
+        password        = request.data['password']
+        name            = request.data['name']
+        email           = request.data['email']
+        adress          = request.data['adress']
+        birthday        = request.data['birthday']
+        gender          = request.data['gender']
+        favorite_genres = request.data['favorite_genres']
         # kiểm tra tên user name đã có trong database hay chưa, Nếu chưa thì thêm, Nếu có rồi thì Response username exist
         if Customer.objects.filter(user_name=user_name):
-            return Response({"Success2": "userName exist"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"userName exist": True}, status=status.HTTP_400_BAD_REQUEST)
+        elif Customer.objects.filter(email=email):
+            return Response({"email exist": True}, status=status.HTTP_400_BAD_REQUEST)
         else:
             # Hash password trước khi thêm customer
-            passwordend = password.encode('ascii')   
-            hash_object = hashlib.md5(passwordend)
+            passwordEndcode = password.encode('ascii')   
+            hash_object = hashlib.md5(passwordEndcode)
             print(hash_object.hexdigest())
             last_id = Customer.objects.all().last().user_id
+            print(last_id)
             createCustomer   = Customer.objects.create(user_id=last_id + 1,
                                                     user_name=user_name,
                                                     password=hash_object.hexdigest(),
@@ -57,9 +60,10 @@ class RegisterCustomer(APIView):
                                                     email=email,
                                                     adress= adress,
                                                     birthday=birthday,
-                                                    gender=gender
+                                                    gender=gender,
+                                                    favorite_genres=favorite_genres
                                                     )
-            return Response({"Success3": True}, status=status.HTTP_200_OK)
+            return Response({"Register success": True}, status=status.HTTP_200_OK)
 
 
 # {
@@ -85,20 +89,31 @@ class LoginCustomer(APIView):
 
             # Hash password để kiểm tra thông tin customer
             passwordend = password.encode('ascii')   
-            hash_object = hashlib.md5(passwordend)
+            hash_object =  hashlib.md5(passwordend)
             print(hash_object.hexdigest())
+            print(user_name)
+            print(password)
 
             # Kiểm tra thông tin  user_name có trong bảng customer thì tiến hành kiểm tra thông tin password
             if get_object_or_404(Customer, user_name=user_name):
                 customer = Customer.objects.get(user_name=user_name)
                 
                 if customer.password == hash_object.hexdigest():
-                    return Response({"Sign In Success": True}, status=status.HTTP_200_OK)
+
+            		
+                    return Response({"Sign In Success": True,
+                    				"user_id": customer.user_id,
+                    				"name": customer.name,
+                    				"email": customer.email ,
+                    				"adress":customer.adress,
+                    				"birthday": customer.birthday ,
+                    				"gender":customer.gender,
+                                    "favorite_genres": customer.favorite_genres}, status=status.HTTP_200_OK)
                 else:
-                    return Response({"Sign In success:": False}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({"Sign In Success": False }, status=status.HTTP_400_BAD_REQUEST)
 
         except:
-            return Response({"Success1": False}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"Fail": True}, status=status.HTTP_400_BAD_REQUEST)
 # {
 #     "user_name": "",
 #     "password": ""

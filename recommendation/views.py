@@ -116,13 +116,14 @@ def recommendations_new_user(request):
             list_recommendations = [item for item, count in collections.Counter(list_result).items() if count > 0]
             
             list_recommendations_random = random.choices(list_recommendations, k=len(list_recommendations))
-           
+            aset = {e for e in list_recommendations_random}
+            list_recommendations_random = [e for e in aset]
             data_json = {
                 'success': True,
                 'user_id': userId,
-                'recommendations': list_recommendations_random,
-                'popularity': popularity_movies,
-                'new': new_movies
+                'recommendations': list_recommendations_random[0:100],
+                'popularity': popularity_movies[0:100],
+                'new': new_movies[0:100]
             }
             print('len recommendations:', len(data_json['recommendations']))
             return Response(data_json, status=status.HTTP_200_OK)

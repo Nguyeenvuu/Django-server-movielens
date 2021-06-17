@@ -81,16 +81,28 @@ WSGI_APPLICATION = 'movielens_api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'movie_db',
+#         'USER': 'postgres',
+#         'PASSWORD': '030898',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'movie_db',
-        'USER': 'postgres',
-        'PASSWORD': '030898',
-        'HOST': 'localhost',
+        'USER': 'nguyeenvuu@movielens-postgresql',
+        'PASSWORD': '03081998NVae',
+        'HOST': 'movielens-postgresql.postgres.database.azure.com',
         'PORT': '5432',
     }
 }
+
 
 
 # Password validation
